@@ -326,7 +326,7 @@
   </rule>
 
   <rule name="EJCS-X17-PublicMutableField" language="java" since="7.27.0"
-        message="EJCS-023: a public field shall be static and final"
+        message="EJCS-X17: a public field shall be static and final"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>public field that is not both static and final (implicit interface modifiers count).</description>
     <priority>1</priority>

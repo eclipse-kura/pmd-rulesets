@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>BigDecimal from a double literal</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>5</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X12: a BigDecimal shall not be constructed from a double</message>
+        </expected-messages>
+        <code><![CDATA[
+import java.math.BigDecimal;
+
+public class Foo {
+    BigDecimal m() {
+        return new BigDecimal(0.1);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>BigDecimal from a float variable, and from a double with a MathContext</description>
+        <expected-problems>2</expected-problems>
+        <expected-linenumbers>6,10</expected-linenumbers>
+        <code><![CDATA[
+import java.math.BigDecimal;
+import java.math.MathContext;
+
+public class Foo {
+    BigDecimal a(float f) {
+        return new BigDecimal(f);
+    }
+
+    BigDecimal b(double d) {
+        return new BigDecimal(d, MathContext.DECIMAL64);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>BigDecimal.valueOf, String and integer constructors</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+import java.math.BigDecimal;
+
+public class Foo {
+    BigDecimal[] m(double d) {
+        return new BigDecimal[] {
+            BigDecimal.valueOf(d),
+            new BigDecimal("0.1"),
+            new BigDecimal(1),
+            new BigDecimal(1L)
+        };
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

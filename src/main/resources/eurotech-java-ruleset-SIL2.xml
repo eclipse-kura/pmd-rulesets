@@ -334,7 +334,7 @@
   </rule>
 
   <rule name="EJCS-X14-AssertForValidation" language="java" since="7.27.0"
-        message="EJCS-X14: assert shall not be used to check a boundary method's parameters"
+        message="EJCS-X14: assert shall not be used to check the parameters of a boundary method"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>assert referring to a parameter of a public or protected method or constructor
       in a boundary package.</description>

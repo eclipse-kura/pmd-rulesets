@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>lock() with unlock() outside a finally block</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>8</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X07: lock() shall be followed immediately by try with unlock() in finally</message>
+        </expected-messages>
+        <code><![CDATA[
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Foo {
+    private final Lock lock = new ReentrantLock();
+
+    void m() {
+        lock.lock();
+        work();
+        lock.unlock();
+    }
+
+    void work() {
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Statement between lock() and the try statement</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>8</expected-linenumbers>
+        <code><![CDATA[
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Foo {
+    private final Lock lock = new ReentrantLock();
+
+    void m() {
+        lock.lock();
+        work();
+        try {
+            work();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    void work() {
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>finally releases a different lock</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>9</expected-linenumbers>
+        <code><![CDATA[
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Foo {
+    private final Lock a = new ReentrantLock();
+    private final Lock b = new ReentrantLock();
+
+    void m() {
+        a.lock();
+        try {
+            work();
+        } finally {
+            b.unlock();
+        }
+    }
+
+    void work() {
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>lockInterruptibly() followed by try without finally</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>8</expected-linenumbers>
+        <code><![CDATA[
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Foo {
+    private final Lock lock = new ReentrantLock();
+
+    void m() throws InterruptedException {
+        lock.lockInterruptibly();
+        try {
+            work();
+        } catch (RuntimeException e) {
+            lock.unlock();
+        }
+    }
+
+    void work() {
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Correct lock idiom, with Lock, ReentrantLock and this-qualified fields</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class Foo {
+    private final Lock lock = new ReentrantLock();
+    private final ReentrantLock reentrant = new ReentrantLock();
+
+    void a() {
+        lock.lock();
+        try {
+            work();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    void b() throws InterruptedException {
+        reentrant.lockInterruptibly();
+        try {
+            work();
+        } finally {
+            reentrant.unlock();
+        }
+    }
+
+    void c() {
+        this.lock.lock();
+        try {
+            work();
+        } finally {
+            this.lock.unlock();
+        }
+    }
+
+    void d(Lock local) {
+        local.lock();
+        try {
+            work();
+        } finally {
+            local.unlock();
+        }
+    }
+
+    void work() {
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>lock() of a ReadWriteLock view: the lock expression is a call and cannot be matched</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>8</expected-linenumbers>
+        <code><![CDATA[
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+public class Foo {
+    private final ReadWriteLock rw = new ReentrantReadWriteLock();
+
+    void m() {
+        rw.writeLock().lock();
+        try {
+            work();
+        } finally {
+            rw.writeLock().unlock();
+        }
+    }
+
+    void work() {
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

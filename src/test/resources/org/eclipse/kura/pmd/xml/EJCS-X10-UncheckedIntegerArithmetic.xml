@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>int addition</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>3</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X10: int and long arithmetic shall use the Math.*Exact methods</message>
+        </expected-messages>
+        <code><![CDATA[
+public class Foo {
+    int add(int a, int b) {
+        return a + b;
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Subtraction and multiplication on int and long, mixed int and long, char arithmetic</description>
+        <expected-problems>4</expected-problems>
+        <expected-linenumbers>3,7,11,15</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    int sub(int a, int b) {
+        return a - b;
+    }
+
+    long mul(long a, long b) {
+        return a * b;
+    }
+
+    long mixed(int a, long b) {
+        return a + b;
+    }
+
+    int offset(char c) {
+        return c - 'a';
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Compound assignments</description>
+        <expected-problems>3</expected-problems>
+        <expected-linenumbers>4,5,6</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    long m(int a, long b) {
+        long total = 0;
+        total += a;
+        total -= b;
+        total *= 2;
+        return total;
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Unary minus and Math.abs</description>
+        <expected-problems>3</expected-problems>
+        <expected-linenumbers>3,7,11</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    int negate(int a) {
+        return -a;
+    }
+
+    long distance(long a) {
+        return Math.abs(a);
+    }
+
+    int magnitude(int b) {
+        return Math.abs(b);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Loop condition is checked, the update clause is exempt</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>3</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    void m(int[] a) {
+        for (int i = 0; i < a.length - 1; i += 2) {
+            System.out.println(a[i]);
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Constants, exact methods, increments, division, String and floating-point arithmetic</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    static final int SIZE = 4 * 1024;
+    static final long LIMIT = -1L;
+
+    int exact(int a, int b) {
+        return Math.multiplyExact(Math.addExact(a, b), Math.negateExact(b));
+    }
+
+    void increments(int i) {
+        i++;
+        --i;
+    }
+
+    int divide(int a, int b) {
+        return a / b % 3;
+    }
+
+    String text(int a) {
+        String s = "value " + a;
+        s += a;
+        return s;
+    }
+
+    double real(double x, float y) {
+        return -x + y * 2 - Math.abs(x);
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

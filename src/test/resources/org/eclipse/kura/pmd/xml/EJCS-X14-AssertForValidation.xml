@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>assert on a parameter of a public method</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>5</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X14: assert shall not be used to check the parameters of a boundary method</message>
+        </expected-messages>
+        <code><![CDATA[
+package org.example.api;
+
+public class Service {
+    public void put(String key) {
+        assert key != null;
+        System.out.println(key);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>assert on a parameter of a protected method and of a public constructor</description>
+        <expected-problems>2</expected-problems>
+        <expected-linenumbers>5,9</expected-linenumbers>
+        <code><![CDATA[
+package org.example.api;
+
+public class Service {
+    public Service(int size) {
+        assert size >= 0 : "negative size";
+    }
+
+    protected void put(String key) {
+        assert !key.isEmpty();
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>assert on locals, and on parameters of non-public methods</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+package org.example.api;
+
+public class Service {
+    public void put(String key) {
+        int length = key == null ? 0 : key.length();
+        assert length >= 0;
+    }
+
+    void internal(String key) {
+        assert key != null;
+    }
+
+    private void helper(String key) {
+        assert key != null;
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>assert on a parameter in a package outside the configured scope</description>
+        <rule-property name="scope">org\.example\.api(\..*)?</rule-property>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+package org.example.internal;
+
+public class Service {
+    public void put(String key) {
+        assert key != null;
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>
