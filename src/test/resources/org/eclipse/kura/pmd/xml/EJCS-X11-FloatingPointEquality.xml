@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>double compared with ==</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>3</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X11: floating-point values shall not be compared with == or !=</message>
+        </expected-messages>
+        <code><![CDATA[
+public class Foo {
+    boolean isZero(double d) {
+        return d == 0.0;
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>float compared with !=, and double compared with an int literal</description>
+        <expected-problems>2</expected-problems>
+        <expected-linenumbers>3,7</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    boolean differ(float a, float b) {
+        return a != b;
+    }
+
+    boolean isZero(double d) {
+        return d == 0;
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Integer equality, Double.compare and relational operators</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    boolean m(int a, int b, double x, double y) {
+        return a == b || Double.compare(x, y) == 0 || x < y || Math.abs(x - y) <= 1e-9;
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>Two breaks in a for loop</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>3</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X01: a loop shall contain no more than one break or continue</message>
+        </expected-messages>
+        <code><![CDATA[
+public class Foo {
+    void m(int[] a) {
+        for (int i = 0; i < a.length; i++) {
+            if (a[i] < 0) {
+                break;
+            }
+            if (a[i] == 0) {
+                break;
+            }
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>A break and a continue in a while loop</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>4</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    void m(java.util.Iterator<String> it) {
+        String s;
+        while (it.hasNext()) {
+            s = it.next();
+            if (s.isEmpty()) {
+                continue;
+            }
+            if (s.equals("end")) {
+                break;
+            }
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Two continues in a do loop</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>4</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    void m(int n) {
+        int i = 0;
+        do {
+            i++;
+            if (i == 2) {
+                continue;
+            }
+            if (i == 3) {
+                continue;
+            }
+        } while (i < n);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>A continue inside a switch exits the enclosing loop, a break inside it does not</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>3</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    void m(int[] a) {
+        for (int x : a) {
+            switch (x) {
+            case 0:
+                continue;
+            case 1:
+                continue;
+            default:
+                break;
+            }
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>A single break</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    void m(int[] a) {
+        for (int x : a) {
+            if (x < 0) {
+                break;
+            }
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Breaks of a switch inside the loop do not count for the loop</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    void m(int[] a) {
+        for (int x : a) {
+            switch (x) {
+            case 0:
+                break;
+            default:
+                break;
+            }
+            if (x > 10) {
+                continue;
+            }
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Exits are counted for the innermost loop only</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>4</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    void m(int[][] a) {
+        for (int[] row : a) {
+            for (int x : row) {
+                if (x < 0) {
+                    break;
+                }
+                if (x == 0) {
+                    continue;
+                }
+            }
+            if (row.length == 0) {
+                break;
+            }
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

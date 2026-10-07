@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>double loop counter</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>3</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X04: a loop control variable shall not be of floating-point type</message>
+        </expected-messages>
+        <code><![CDATA[
+public class Foo {
+    void m() {
+        for (double d = 0.0; d < 1.0; d += 0.1) {
+            System.out.println(d);
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>float loop counter</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>3</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    void m() {
+        for (float f = 0f; f < 1f; f += 0.1f) {
+            System.out.println(f);
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Floating-point counter declared before the loop</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>4</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    void m() {
+        double d;
+        for (d = 0.0; d < 1.0; d += 0.1) {
+            System.out.println(d);
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Integer counter, floating-point values in the body, foreach over doubles</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    void m(double[] values) {
+        for (int i = 0; i < 10; i++) {
+            double x = i * 0.1;
+            System.out.println(x);
+        }
+        for (double v : values) {
+            System.out.println(v);
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

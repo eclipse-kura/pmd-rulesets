@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>Unqualified self-call</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>3</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X03: a method shall not call itself</message>
+        </expected-messages>
+        <code><![CDATA[
+public class Foo {
+    int fact(int n) {
+        return n <= 1 ? 1 : n * fact(n - 1);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>this-qualified self-call</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>3</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    int fact(int n) {
+        return n <= 1 ? 1 : n * this.fact(n - 1);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Self-call qualified by the enclosing class name</description>
+        <expected-problems>2</expected-problems>
+        <expected-linenumbers>3,3</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    static int fib(int n) {
+        return n < 2 ? n : Foo.fib(n - 1) + Foo.fib(n - 2);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Self-call on another instance of the enclosing class</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>8</expected-linenumbers>
+        <code><![CDATA[
+public class Node {
+    private Node next;
+
+    int size() {
+        if (next == null) {
+            return 1;
+        }
+        return 1 + next.size();
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Self-call in an enum and in a record</description>
+        <expected-problems>2</expected-problems>
+        <expected-linenumbers>4,10</expected-linenumbers>
+        <code><![CDATA[
+public enum Level {
+    LOW;
+    int depth(int n) {
+        return n == 0 ? 0 : depth(n - 1);
+    }
+}
+
+record Pair(int a, int b) {
+    int sum(int n) {
+        return n == 0 ? a : sum(n - 1);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Overload of equal arity: intended over-report</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>3</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    void log(String s) {
+        log(s.length());
+    }
+
+    void log(int n) {
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Calls that do not target the enclosing method</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    private Object delegate;
+
+    int sum(int a) {
+        return sum(a, 0);
+    }
+
+    int sum(int a, int b) {
+        return a + b;
+    }
+
+    @Override
+    public String toString() {
+        return delegate.toString() + super.toString();
+    }
+
+    void run() {
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+            }
+        };
+        r.run();
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>Method with cognitive complexity 15, the limit of the standard</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    int m(int a) {
+        int x = 0;
+        if (a == 0) {
+            x = a;
+        }
+        if (a == 1) {
+            x = a;
+        }
+        if (a == 2) {
+            x = a;
+        }
+        if (a == 3) {
+            x = a;
+        }
+        if (a == 4) {
+            x = a;
+        }
+        if (a == 5) {
+            x = a;
+        }
+        if (a == 6) {
+            x = a;
+        }
+        if (a == 7) {
+            x = a;
+        }
+        if (a == 8) {
+            x = a;
+        }
+        if (a == 9) {
+            x = a;
+        }
+        if (a == 10) {
+            x = a;
+        }
+        if (a == 11) {
+            x = a;
+        }
+        if (a == 12) {
+            x = a;
+        }
+        if (a == 13) {
+            x = a;
+        }
+        if (a == 14) {
+            x = a;
+        }
+        return x;
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Method with cognitive complexity 16, above the limit</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>2</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    int m(int a) {
+        int x = 0;
+        if (a == 0) {
+            x = a;
+        }
+        if (a == 1) {
+            x = a;
+        }
+        if (a == 2) {
+            x = a;
+        }
+        if (a == 3) {
+            x = a;
+        }
+        if (a == 4) {
+            x = a;
+        }
+        if (a == 5) {
+            x = a;
+        }
+        if (a == 6) {
+            x = a;
+        }
+        if (a == 7) {
+            x = a;
+        }
+        if (a == 8) {
+            x = a;
+        }
+        if (a == 9) {
+            x = a;
+        }
+        if (a == 10) {
+            x = a;
+        }
+        if (a == 11) {
+            x = a;
+        }
+        if (a == 12) {
+            x = a;
+        }
+        if (a == 13) {
+            x = a;
+        }
+        if (a == 14) {
+            x = a;
+        }
+        if (a == 15) {
+            x = a;
+        }
+        return x;
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>wait() guarded by if instead of while</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>8</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X08: wait() shall be called in synchronized code, inside a while loop</message>
+        </expected-messages>
+        <code><![CDATA[
+public class Foo {
+    private final Object monitor = new Object();
+    private boolean ready;
+
+    void m() throws InterruptedException {
+        synchronized (monitor) {
+            if (!ready) {
+                monitor.wait();
+            }
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>wait(long) in a while loop but outside synchronized code</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>7</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    private final Object monitor = new Object();
+    private boolean ready;
+
+    void m() throws InterruptedException {
+        while (!ready) {
+            monitor.wait(100L);
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>wait() in a lambda: the loop and synchronized block of the outer method do not count</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>10</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    private final Object monitor = new Object();
+    private boolean ready;
+
+    void m() {
+        synchronized (monitor) {
+            while (!ready) {
+                Runnable r = () -> {
+                    try {
+                        monitor.wait();
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
+                };
+                r.run();
+            }
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>wait() in a while or do loop inside synchronized code</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    private final Object monitor = new Object();
+    private boolean ready;
+
+    void block() throws InterruptedException {
+        synchronized (monitor) {
+            while (!ready) {
+                monitor.wait();
+            }
+        }
+    }
+
+    synchronized void method() throws InterruptedException {
+        while (!ready) {
+            wait(100L, 0);
+        }
+    }
+
+    void doLoop() throws InterruptedException {
+        synchronized (this) {
+            do {
+                this.wait(100L);
+            } while (!ready);
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

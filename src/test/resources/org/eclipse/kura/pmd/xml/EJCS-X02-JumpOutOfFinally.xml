@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>break in finally leaving the block</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>8</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X02: break or continue shall not leave a finally block</message>
+        </expected-messages>
+        <code><![CDATA[
+public class Foo {
+    void m(int[] a) {
+        for (int x : a) {
+            try {
+                work(x);
+            } finally {
+                if (x > 0) {
+                    break;
+                }
+            }
+        }
+    }
+
+    void work(int x) {
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>continue in finally leaving the block</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>7</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    void m(int[] a) {
+        for (int x : a) {
+            try {
+                work(x);
+            } finally {
+                continue;
+            }
+        }
+    }
+
+    void work(int x) {
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>continue in a switch in finally still targets the loop outside the block</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>9</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    void m(int[] a) {
+        for (int x : a) {
+            try {
+                work(x);
+            } finally {
+                switch (x) {
+                case 0:
+                    continue;
+                default:
+                    break;
+                }
+            }
+        }
+    }
+
+    void work(int x) {
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Loop and switch entirely inside the finally block</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    void m(int[] a) {
+        try {
+            work(0);
+        } finally {
+            for (int x : a) {
+                if (x < 0) {
+                    break;
+                }
+                if (x == 0) {
+                    continue;
+                }
+                switch (x) {
+                case 1:
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
+
+    void work(int x) {
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>break and continue in the try block</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    void m(int[] a) {
+        for (int x : a) {
+            try {
+                if (x < 0) {
+                    break;
+                }
+                continue;
+            } finally {
+                work(x);
+            }
+        }
+    }
+
+    void work(int x) {
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

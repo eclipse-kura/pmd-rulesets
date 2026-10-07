@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>Public method of a public class using a parameter without checking it</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>4</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X13: a boundary method shall check its parameters before use</message>
+        </expected-messages>
+        <code><![CDATA[
+package org.example.api;
+
+public class Service {
+    public void put(String key) {
+        System.out.println(key.length());
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Protected method and public constructor without a guard</description>
+        <expected-problems>2</expected-problems>
+        <expected-linenumbers>6,10</expected-linenumbers>
+        <code><![CDATA[
+package org.example.api;
+
+public class Service {
+    private final int size;
+
+    public Service(int size) {
+        this.size = size;
+    }
+
+    protected int scaled(int factor) {
+        return size * factor;
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Guard with requireNonNull, or with an if statement that throws</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+package org.example.api;
+
+import java.util.Objects;
+
+public class Service {
+    private final String name;
+
+    public Service(String name) {
+        this.name = Objects.requireNonNull(name, "name");
+    }
+
+    public void put(String key) {
+        if (key == null || key.isEmpty()) {
+            throw new IllegalArgumentException("key");
+        }
+        System.out.println(name + key);
+    }
+
+    public void resize(int size) {
+        if (size < 0) {
+            throw new IllegalArgumentException("size");
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Methods outside the boundary: boolean or no parameters, non-public, abstract, non-public type</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+package org.example.api;
+
+public abstract class Service {
+    public void setEnabled(boolean enabled) {
+        System.out.println(enabled);
+    }
+
+    public void start() {
+    }
+
+    void internal(String key) {
+        System.out.println(key);
+    }
+
+    private void helper(String key) {
+        System.out.println(key);
+    }
+
+    public abstract void handle(String key);
+}
+
+class Helper {
+    public void put(String key) {
+        System.out.println(key);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Unchecked parameter in a package outside the configured scope</description>
+        <rule-property name="scope">org\.example\.api(\..*)?</rule-property>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+package org.example.internal;
+
+public class Service {
+    public void put(String key) {
+        System.out.println(key);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Unchecked parameter in a package inside the configured scope</description>
+        <rule-property name="scope">org\.example\.api(\..*)?</rule-property>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>4</expected-linenumbers>
+        <code><![CDATA[
+package org.example.api.sub;
+
+public class Service {
+    public void put(String key) {
+        System.out.println(key);
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

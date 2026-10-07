@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>Local variable with the name of a field</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>5</expected-linenumbers>
+        <expected-messages>
+            <message>EJCS-X09: a local variable shall not have the name of a field of its class</message>
+        </expected-messages>
+        <code><![CDATA[
+public class Foo {
+    private int count;
+
+    void m() {
+        int count = 0;
+        System.out.println(count);
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Loop variables with the name of a field</description>
+        <expected-problems>2</expected-problems>
+        <expected-linenumbers>5,8</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    private int index;
+
+    void m(int[] values) {
+        for (int index = 0; index < values.length; index++) {
+            System.out.println(index);
+        }
+        for (int index : values) {
+            System.out.println(index);
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Local shadowing a field in an enum and in a record</description>
+        <expected-problems>2</expected-problems>
+        <expected-linenumbers>6,14</expected-linenumbers>
+        <code><![CDATA[
+public enum Level {
+    LOW;
+    private int weight;
+
+    int m() {
+        int weight = 1;
+        return weight;
+    }
+}
+
+record Pair(int a, int b) {
+    static int created;
+    int m() {
+        int created = a + b;
+        return created;
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Parameters, and locals named like a field of another class</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    private int count;
+
+    void setCount(int count) {
+        this.count = count;
+    }
+
+    static class Inner {
+        void m() {
+            int count = 0;
+            System.out.println(count);
+        }
+    }
+
+    void anonymous() {
+        Runnable r = new Runnable() {
+            private int calls;
+
+            @Override
+            public void run() {
+                int count = calls;
+                System.out.println(count);
+            }
+        };
+        r.run();
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
+-->
+<test-data
+    xmlns="http://pmd.sourceforge.net/rule-tests"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/rule-tests http://pmd.sourceforge.net/rule-tests_1_0_0.xsd">
+
+    <test-code>
+        <description>Labeled loop is reported, as allowLoops is false</description>
+        <expected-problems>1</expected-problems>
+        <expected-linenumbers>3</expected-linenumbers>
+        <code><![CDATA[
+public class Foo {
+    void m(int[][] a) {
+        outer:
+        for (int[] row : a) {
+            for (int x : row) {
+                if (x < 0) {
+                    break outer;
+                }
+            }
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Loops without labels</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+public class Foo {
+    void m(int[] a) {
+        for (int x : a) {
+            System.out.println(x);
+        }
+    }
+}
+]]></code>
+    </test-code>
+
+</test-data>
