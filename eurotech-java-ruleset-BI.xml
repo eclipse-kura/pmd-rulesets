@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Eurotech Java Coding Standard (PR1067) - PMD ruleset for Basic Integrity
-  Configuration of record for clause 7 of the standard. Requires PMD 7.27.0.
-  Applied to every module except the SIL 2 bundles, which use
-  eurotech-java-ruleset-sil2.xml (this ruleset plus the rules of EJCS clause 5.11).
-  A change to this file is a change to the standard (clause 9.1) and shall be applied
-  to eurotech-java-ruleset-sil2.xml as well: the self-test fails if the two differ
-  in any rule other than those of clause 5.11.
-  Every entry names the EJCS rule it enforces. Custom rules (EJCS-Xnn) are
-  exercised by selftest/ on every build and every PMD upgrade.
+
+    Copyright (c) 2026 Eurotech and/or its affiliates and others
+
+    This program and the accompanying materials are made
+    available under the terms of the Eclipse Public License 2.0
+    which is available at https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+     Eurotech
+
 -->
 <ruleset name="Eurotech EJCS - Basic Integrity"
          xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 
-  <description>Eurotech Java Coding Standard (PR1067), Basic Integrity: every rule except clause 5.11</description>
+  <description>Eurotech Java Coding Standard, Basic Integrity: every rule except clause 5.11</description>
 
   <!-- ============================================================ built-in rules -->
 
@@ -102,7 +105,7 @@
   <!-- ============================================================ custom rules -->
 
   <rule name="EJCS-X01-LoopWithMultipleExits" language="java" since="7.27.0"
-        message="EJCS-002: a loop shall contain no more than one break or continue"
+        message="EJCS-X01: a loop shall contain no more than one break or continue"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>More than one break or continue targeting the same loop.</description>
     <priority>1</priority>
@@ -122,7 +125,7 @@
   </rule>
 
   <rule name="EJCS-X02-JumpOutOfFinally" language="java" since="7.27.0"
-        message="EJCS-004: break or continue shall not leave a finally block"
+        message="EJCS-X02: break or continue shall not leave a finally block"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>break or continue in a finally block whose target lies outside that block.</description>
     <priority>1</priority>
@@ -141,7 +144,7 @@
   </rule>
 
   <rule name="EJCS-X03-DirectRecursion" language="java" since="7.27.0"
-        message="EJCS-006: a method shall not call itself"
+        message="EJCS-X03: a method shall not call itself"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>Call whose target is statically the enclosing method: same name and arity, and
       unqualified, this-qualified, qualified by the enclosing class name, or made on an expression
@@ -164,7 +167,7 @@
   </rule>
 
   <rule name="EJCS-X04-FloatingPointLoopCounter" language="java" since="7.27.0"
-        message="EJCS-007: a loop control variable shall not be of floating-point type"
+        message="EJCS-X04: a loop control variable shall not be of floating-point type"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>for loop whose control variable is float or double.</description>
     <priority>1</priority>
@@ -178,7 +181,7 @@
   </rule>
 
   <rule name="EJCS-X05-FinalizeOverride" language="java" since="7.27.0"
-        message="EJCS-010: finalize() shall not be overridden"
+        message="EJCS-X05: finalize() shall not be overridden"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>Declaration of finalize() with no parameters.</description>
     <priority>1</priority>
@@ -190,7 +193,7 @@
   </rule>
 
   <rule name="EJCS-X06-InterruptedExceptionSwallowed" language="java" since="7.27.0"
-        message="EJCS-011: an InterruptedException handler shall restore the interrupt or rethrow"
+        message="EJCS-X06: an InterruptedException handler shall restore the interrupt or rethrow"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>Handler of InterruptedException that neither calls interrupt() nor throws.</description>
     <priority>1</priority>
@@ -205,7 +208,7 @@
   </rule>
 
   <rule name="EJCS-X07-LockNotReleasedInFinally" language="java" since="7.27.0"
-        message="EJCS-012: lock() shall be followed immediately by try with unlock() in finally"
+        message="EJCS-X07: lock() shall be followed immediately by try with unlock() in finally"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>Lock.lock() or lockInterruptibly() not immediately followed by a try statement
       whose finally block calls unlock() on the same lock.</description>
@@ -224,7 +227,7 @@
   </rule>
 
   <rule name="EJCS-X08-WaitOutsideLoop" language="java" since="7.27.0"
-        message="EJCS-012: wait() shall be called in synchronized code, inside a while loop"
+        message="EJCS-X08: wait() shall be called in synchronized code, inside a while loop"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>Object.wait() not enclosed in a while or do loop and in synchronized code
       of the same method.</description>
@@ -244,7 +247,7 @@
   </rule>
 
   <rule name="EJCS-X09-LocalShadowsField" language="java" since="7.27.0"
-        message="EJCS-014: a local variable shall not have the name of a field of its class"
+        message="EJCS-X09: a local variable shall not have the name of a field of its class"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>Local variable named as a field declared in the enclosing class body.
       Parameters are not reported.</description>
@@ -259,7 +262,7 @@
   </rule>
 
   <rule name="EJCS-X11-FloatingPointEquality" language="java" since="7.27.0"
-        message="EJCS-015: floating-point values shall not be compared with == or !="
+        message="EJCS-X11: floating-point values shall not be compared with == or !="
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>== or != with a float or double operand.</description>
     <priority>1</priority>
@@ -272,7 +275,7 @@
   </rule>
 
   <rule name="EJCS-X12-BigDecimalFromDouble" language="java" since="7.27.0"
-        message="EJCS-015: a BigDecimal shall not be constructed from a double"
+        message="EJCS-X12: a BigDecimal shall not be constructed from a double"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>new BigDecimal(...) whose first argument is float or double.</description>
     <priority>1</priority>
@@ -285,7 +288,7 @@
   </rule>
 
   <rule name="EJCS-X15-DiscardedStatusResult" language="java" since="7.27.0"
-        message="EJCS-017: the status result of this method shall not be discarded"
+        message="EJCS-X15: the status result of this method shall not be discarded"
         class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
     <description>Call used as a statement, to a method whose result reports whether the operation
       succeeded or how much it did.</description>
