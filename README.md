@@ -15,6 +15,11 @@ rules `EJCS-X10-UncheckedIntegerArithmetic`, `EJCS-X13-UnvalidatedBoundaryParame
 
 The rulesets target PMD 7.27.0.
 
+Every rule is named after the EJCS rule it enforces: a custom check is `EJCS-Xnn-<Name>`, and a built-in PMD rule is
+referenced as `EJCS-<nnn>-<PmdRuleName>` (for example `EJCS-001-LabeledStatement`), following the coverage map of the
+standard. Reports, suppressions (`@SuppressWarnings("PMD.EJCS-001-LabeledStatement")`), baseline files and imported
+SonarQube issues (`external_pmd:EJCS-...`) therefore carry the EJCS reference and can be filtered by it.
+
 ## Usage
 
 Reference a ruleset from `maven-pmd-plugin` by its raw URL, pinned to a tag or commit:

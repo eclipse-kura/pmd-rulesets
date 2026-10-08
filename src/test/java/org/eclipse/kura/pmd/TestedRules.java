@@ -26,11 +26,11 @@ final class TestedRules {
 
     /** Built-in rules referenced with overridden properties. */
     static final List<String> CONFIGURED_BUILT_IN = List.of(
-            "LabeledStatement",
-            "CognitiveComplexity",
-            "AvoidReassigningLoopVariables",
-            "AvoidCatchingGenericException",
-            "EmptyCatchBlock");
+            "EJCS-001-LabeledStatement",
+            "EJCS-005-CognitiveComplexity",
+            "EJCS-007-AvoidReassigningLoopVariables",
+            "EJCS-019-AvoidCatchingGenericException",
+            "EJCS-020-EmptyCatchBlock");
 
     /** Custom rules defined in both rulesets. */
     static final List<String> CUSTOM_SHARED = List.of(
