@@ -24,26 +24,26 @@
   <!-- ============================================================ built-in rules -->
 
   <!-- EJCS-001 No labels -->
-  <rule ref="category/java/bestpractices.xml/LabeledStatement">
+  <rule ref="category/java/bestpractices.xml/LabeledStatement" name="EJCS-001-LabeledStatement">
     <properties><property name="allowLoops" value="false"/></properties>
   </rule>
 
   <!-- EJCS-003 Switch statements -->
-  <rule ref="category/java/errorprone.xml/ImplicitSwitchFallThrough"/>
-  <rule ref="category/java/bestpractices.xml/NonExhaustiveSwitch"/>
+  <rule ref="category/java/errorprone.xml/ImplicitSwitchFallThrough" name="EJCS-003-ImplicitSwitchFallThrough"/>
+  <rule ref="category/java/bestpractices.xml/NonExhaustiveSwitch" name="EJCS-003-NonExhaustiveSwitch"/>
 
   <!-- EJCS-004 No jumps out of finally (return, throw; break/continue: X02) -->
-  <rule ref="category/java/errorprone.xml/ReturnFromFinallyBlock"/>
-  <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally"/>
+  <rule ref="category/java/errorprone.xml/ReturnFromFinallyBlock" name="EJCS-004-ReturnFromFinallyBlock"/>
+  <rule ref="category/java/errorprone.xml/DoNotThrowExceptionInFinally" name="EJCS-004-DoNotThrowExceptionInFinally"/>
 
   <!-- EJCS-005 Method complexity. Limit of clause 5.12 is 15; PMD reports at or above
        reportLevel, so reportLevel = limit + 1 -->
-  <rule ref="category/java/design.xml/CognitiveComplexity">
+  <rule ref="category/java/design.xml/CognitiveComplexity" name="EJCS-005-CognitiveComplexity">
     <properties><property name="reportLevel" value="16"/></properties>
   </rule>
 
   <!-- EJCS-007 Loop integrity (floating-point counters: X04) -->
-  <rule ref="category/java/bestpractices.xml/AvoidReassigningLoopVariables">
+  <rule ref="category/java/bestpractices.xml/AvoidReassigningLoopVariables" name="EJCS-007-AvoidReassigningLoopVariables">
     <properties>
       <property name="forReassign" value="deny"/>
       <property name="foreachReassign" value="deny"/>
@@ -51,43 +51,43 @@
   </rule>
 
   <!-- EJCS-008 Null checks -->
-  <rule ref="category/java/errorprone.xml/BrokenNullCheck"/>
-  <rule ref="category/java/errorprone.xml/MisplacedNullCheck"/>
+  <rule ref="category/java/errorprone.xml/BrokenNullCheck" name="EJCS-008-BrokenNullCheck"/>
+  <rule ref="category/java/errorprone.xml/MisplacedNullCheck" name="EJCS-008-MisplacedNullCheck"/>
 
   <!-- EJCS-009 Resource release -->
-  <rule ref="category/java/errorprone.xml/CloseResource"/>
-  <rule ref="category/java/bestpractices.xml/UseTryWithResources"/>
+  <rule ref="category/java/errorprone.xml/CloseResource" name="EJCS-009-CloseResource"/>
+  <rule ref="category/java/bestpractices.xml/UseTryWithResources" name="EJCS-009-UseTryWithResources"/>
 
   <!-- EJCS-010 Object lifetime (finalize() overrides: X05) -->
-  <rule ref="category/java/errorprone.xml/AvoidCallingFinalize"/>
-  <rule ref="category/java/errorprone.xml/DoNotCallGarbageCollectionExplicitly"/>
+  <rule ref="category/java/errorprone.xml/AvoidCallingFinalize" name="EJCS-010-AvoidCallingFinalize"/>
+  <rule ref="category/java/errorprone.xml/DoNotCallGarbageCollectionExplicitly" name="EJCS-010-DoNotCallGarbageCollectionExplicitly"/>
 
   <!-- EJCS-011 Thread lifecycle (interrupt handling: X06) -->
-  <rule ref="category/java/multithreading.xml/AvoidThreadGroup"/>
-  <rule ref="category/java/multithreading.xml/DontCallThreadRun"/>
+  <rule ref="category/java/multithreading.xml/AvoidThreadGroup" name="EJCS-011-AvoidThreadGroup"/>
+  <rule ref="category/java/multithreading.xml/DontCallThreadRun" name="EJCS-011-DontCallThreadRun"/>
 
   <!-- EJCS-012 Locks and monitors (lock release: X07, wait(): X08) -->
-  <rule ref="category/java/multithreading.xml/DoubleCheckedLocking"/>
+  <rule ref="category/java/multithreading.xml/DoubleCheckedLocking" name="EJCS-012-DoubleCheckedLocking"/>
 
   <!-- EJCS-013 Naming. The patterns of clause 5.12 are the PMD defaults; loggers are constants named LOG -->
-  <rule ref="category/java/codestyle.xml/ClassNamingConventions"/>
-  <rule ref="category/java/codestyle.xml/MethodNamingConventions"/>
-  <rule ref="category/java/codestyle.xml/FieldNamingConventions"/>
-  <rule ref="category/java/codestyle.xml/FormalParameterNamingConventions"/>
-  <rule ref="category/java/codestyle.xml/LocalVariableNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/ClassNamingConventions" name="EJCS-013-ClassNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/MethodNamingConventions" name="EJCS-013-MethodNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/FieldNamingConventions" name="EJCS-013-FieldNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/FormalParameterNamingConventions" name="EJCS-013-FormalParameterNamingConventions"/>
+  <rule ref="category/java/codestyle.xml/LocalVariableNamingConventions" name="EJCS-013-LocalVariableNamingConventions"/>
 
   <!-- EJCS-016 Reference equality -->
-  <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals"/>
+  <rule ref="category/java/errorprone.xml/CompareObjectsWithEquals" name="EJCS-016-CompareObjectsWithEquals"/>
 
   <!-- EJCS-019 No catching of Throwable or Error -->
-  <rule ref="category/java/errorprone.xml/AvoidCatchingGenericException">
+  <rule ref="category/java/errorprone.xml/AvoidCatchingGenericException" name="EJCS-019-AvoidCatchingGenericException">
     <properties>
       <property name="typesThatShouldNotBeCaught" value="java.lang.Throwable,java.lang.Error"/>
     </properties>
   </rule>
 
   <!-- EJCS-020 No empty handlers: no name- or comment-based exemption -->
-  <rule ref="category/java/errorprone.xml/EmptyCatchBlock">
+  <rule ref="category/java/errorprone.xml/EmptyCatchBlock" name="EJCS-020-EmptyCatchBlock">
     <properties>
       <property name="allowCommentedBlocks" value="false"/>
       <property name="allowExceptionNameRegex" value="^$"/>
@@ -95,13 +95,13 @@
   </rule>
 
   <!-- EJCS-021 No unsupported JDK APIs -->
-  <rule ref="category/java/errorprone.xml/UnsupportedJdkApiUsage"/>
+  <rule ref="category/java/errorprone.xml/UnsupportedJdkApiUsage" name="EJCS-021-UnsupportedJdkApiUsage"/>
 
   <!-- EJCS-022 No accessibility alteration -->
-  <rule ref="category/java/errorprone.xml/AvoidAccessibilityAlteration"/>
+  <rule ref="category/java/errorprone.xml/AvoidAccessibilityAlteration" name="EJCS-022-AvoidAccessibilityAlteration"/>
 
   <!-- EJCS-024 Braces (layout: formatter) -->
-  <rule ref="category/java/codestyle.xml/ControlStatementBraces"/>
+  <rule ref="category/java/codestyle.xml/ControlStatementBraces" name="EJCS-024-ControlStatementBraces"/>
 
   <!-- ============================================================ custom rules -->
 
