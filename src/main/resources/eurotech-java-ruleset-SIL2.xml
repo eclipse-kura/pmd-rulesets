@@ -70,11 +70,11 @@
   <rule ref="category/java/multithreading.xml/DoubleCheckedLocking" name="EJCS-012-DoubleCheckedLocking"/>
 
   <!-- EJCS-013 Naming. The patterns of clause 5.12 are the PMD defaults; loggers are constants named LOG,
-       or named logger, which FieldNamingConventions does not report -->
+       or named logger, auditLogger or log, which FieldNamingConventions does not report -->
   <rule ref="category/java/codestyle.xml/ClassNamingConventions" name="EJCS-013-ClassNamingConventions"/>
   <rule ref="category/java/codestyle.xml/MethodNamingConventions" name="EJCS-013-MethodNamingConventions"/>
   <rule ref="category/java/codestyle.xml/FieldNamingConventions" name="EJCS-013-FieldNamingConventions">
-    <properties><property name="violationSuppressXPath" value=".[@Name = 'logger']"/></properties>
+    <properties><property name="violationSuppressXPath" value=".[@Name = ('logger', 'auditLogger', 'log')]"/></properties>
   </rule>
   <rule ref="category/java/codestyle.xml/FormalParameterNamingConventions" name="EJCS-013-FormalParameterNamingConventions"/>
   <rule ref="category/java/codestyle.xml/LocalVariableNamingConventions" name="EJCS-013-LocalVariableNamingConventions"/>

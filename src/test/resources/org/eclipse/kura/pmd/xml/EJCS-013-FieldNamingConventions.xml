@@ -31,6 +31,30 @@ public class Foo {
     </test-code>
 
     <test-code>
+        <description>Constant named auditLogger is not reported</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+import java.util.logging.Logger;
+
+public class Foo {
+    private static final Logger auditLogger = Logger.getLogger("audit");
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Constant named log is not reported</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+import java.util.logging.Logger;
+
+public class Foo {
+    private static final Logger log = Logger.getLogger(Foo.class.getName());
+}
+]]></code>
+    </test-code>
+
+    <test-code>
         <description>Constant named LOG is not reported</description>
         <expected-problems>0</expected-problems>
         <code><![CDATA[
@@ -43,19 +67,61 @@ public class Foo {
     </test-code>
 
     <test-code>
-        <description>Other lower-case constants are still reported, also in the declaration of logger</description>
-        <expected-problems>2</expected-problems>
-        <expected-linenumbers>4,5</expected-linenumbers>
+        <description>All exempt logger names together in one class are not reported</description>
+        <expected-problems>0</expected-problems>
+        <code><![CDATA[
+import java.util.logging.Logger;
+
+public class Foo {
+    private static final Logger logger = Logger.getLogger(Foo.class.getName());
+    private static final Logger auditLogger = Logger.getLogger("audit");
+    private static final Logger log = Logger.getLogger("other");
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Names close to the exempt ones are still reported: the exemption is an exact, case-sensitive match</description>
+        <expected-problems>5</expected-problems>
+        <expected-linenumbers>4,5,6,7,8</expected-linenumbers>
         <expected-messages>
-            <message>The constant name 'log' doesn't match '[A-Z][A-Z_0-9]*'</message>
-            <message>The constant name 'other' doesn't match '[A-Z][A-Z_0-9]*'</message>
+            <message>The constant name 'Log' doesn't match '[A-Z][A-Z_0-9]*'</message>
+            <message>The constant name 'Logger' doesn't match '[A-Z][A-Z_0-9]*'</message>
+            <message>The constant name 'auditLog' doesn't match '[A-Z][A-Z_0-9]*'</message>
+            <message>The constant name 'auditlogger' doesn't match '[A-Z][A-Z_0-9]*'</message>
+            <message>The constant name 'loggers' doesn't match '[A-Z][A-Z_0-9]*'</message>
         </expected-messages>
         <code><![CDATA[
 import java.util.logging.Logger;
 
 public class Foo {
-    private static final Logger log = Logger.getLogger(Foo.class.getName());
+    private static final Logger Log = java.util.logging.Logger.getLogger("a");
+    private static final Logger Logger = java.util.logging.Logger.getLogger("b");
+    private static final Logger auditLog = java.util.logging.Logger.getLogger("c");
+    private static final Logger auditlogger = java.util.logging.Logger.getLogger("d");
+    private static final Logger loggers = java.util.logging.Logger.getLogger("e");
+}
+]]></code>
+    </test-code>
+
+    <test-code>
+        <description>Other lower-case constants are still reported, also in the declaration of an exempt logger</description>
+        <expected-problems>4</expected-problems>
+        <expected-linenumbers>4,5,6,7</expected-linenumbers>
+        <expected-messages>
+            <message>The constant name 'other' doesn't match '[A-Z][A-Z_0-9]*'</message>
+            <message>The constant name 'auditOther' doesn't match '[A-Z][A-Z_0-9]*'</message>
+            <message>The constant name 'logOther' doesn't match '[A-Z][A-Z_0-9]*'</message>
+            <message>The constant name 'plain' doesn't match '[A-Z][A-Z_0-9]*'</message>
+        </expected-messages>
+        <code><![CDATA[
+import java.util.logging.Logger;
+
+public class Foo {
     private static final Logger logger = Logger.getLogger(Foo.class.getName()), other = logger;
+    private static final Logger auditLogger = Logger.getLogger("audit"), auditOther = auditLogger;
+    private static final Logger log = Logger.getLogger("log"), logOther = log;
+    private static final String plain = "x";
 }
 ]]></code>
     </test-code>
