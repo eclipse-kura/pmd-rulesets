@@ -29,6 +29,7 @@ final class TestedRules {
             "EJCS-001-LabeledStatement",
             "EJCS-005-CognitiveComplexity",
             "EJCS-007-AvoidReassigningLoopVariables",
+            "EJCS-013-FieldNamingConventions",
             "EJCS-019-AvoidCatchingGenericException",
             "EJCS-020-EmptyCatchBlock");
 
